@@ -1,3 +1,65 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:react/jsx-runtime",
+    "plugin:tailwindcss/recommended" ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [ "react" ],
+  "rules": {
+    "semi": [ "warn", "always" ],
+    "quotes": [ "warn", "double" ],
+    "no-multi-spaces": "warn",
+    "no-unused-vars": "warn",
+    "no-trailing-spaces": "warn",
+    "padded-blocks": "warn",
+    "no-multiple-empty-lines": "warn",
+    "import/newline-after-import": "warn",
+    "react/jsx-indent": "warn",
+    "react/jsx-closing-tag-location": "warn",
+    "react/destructuring-assignment": "off",
+    "comma-dangle": "off",
+    "react/prop-types": "off",
+    "object-curly-spacing": "warn",
+    "prefer-template": "warn",
+    "comma-spacing": "warn",
+    "key-spacing": "warn",
+    "space-infix-ops": "warn",
+    "indent": "warn",
+    "block-spacing": "warn",
+    "space-in-parens": "warn",
+    "arrow-parens": "warn",
+    "react/jsx-tag-spacing": "warn",
+    "prefer-const": "warn",
+    "arrow-spacing": "warn",
+    "react/jsx-equals-spacing": "warn",
+    "react/jsx-indent-props": "warn",
+    "react/jsx-closing-bracket-location": "warn",
+    "no-empty": "warn",
+    "max-len": [ "warn", { "code": 120, "ignoreComments": true } ],
+    // "jsx-a11y/label-has-associated-control": "off",
+    "import/extensions": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "no-use-before-define": [ "error", { "functions": false } ],
+    "arrow-body-style": "off",
+    "import/prefer-default-export": "off",
+    "no-shadow": "off",
+    "object-curly-newline": [
+      "warn",
+      { "ObjectExpression": { "multiline": true, "minProperties": 4 },
+        "ObjectPattern": { "multiline": true, "minProperties": 5 },
+        "ImportDeclaration": { "multiline": true, "minProperties": 5 },
+        "ExportDeclaration": { "multiline": true, "minProperties": 5 }
+      }
+    ]
+  }
 }
