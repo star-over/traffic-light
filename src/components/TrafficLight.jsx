@@ -1,71 +1,55 @@
 "use client";
 
-import {
-  assign, createMachine
-} from "xstate";
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/order */
+
+import { assign, createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
 import { Light } from "./Light";
+import { useEffect } from "react";
 
-// eslint-disable-next-line operator-linebreak
 const trafficLightMachine =
-/** @xstate-layout N4IgpgJg5mDOIC5QBcBOBDAZpglgYwBkcoALZAOigHsBiZKgZWXQDsIAhATwG0AGAXUSgADlVg5kOKiyEgAHogCMAZl7kAbAFYAHNoAsigOyLNAJl2KANCE6JTpzeV7L1ew7wCcm9V5+aAvv7WaFi4hMRk5LDMbABGnAAqjPTCdMmsHDwCsqLiktKyCgh6ysoa6ryKeprOitq8erzq1rYI9o7Oru6+PQFBICHY+ESkFNFUqfRMGVx8gkgguRJSMgtFWtrk2oZ6Hsba6sbKKi12Dk4uNQ5amrfqgcEYQ+GjUTEQ8UkA4rRT77PZBZLfKrUDrHRbHYeDzaDwVUwmDynBDaRTkPTabzbUyXcwIwL9FhUCBwWSDMIjMg5MTLAprRAAWmaNkZ9365OGEQo1GpeRWhUQelMyMUijUykMylMh3Upi8HjF2geAyeFK5bwyn2SE15tNB8jsPnImmUHl4mjhilcGOZrVMGPIyiFei0uyaLnsyo5L0i42EupBAoQmkMpmNjWUJrNig8LmUyPtmyd9tdZvUHtMXtVnNe0U1iSoPwD-PpCEMe3IhludV4ktD6dtSkUYe2UsMqK05aaegJ-iAA */
+/** @xstate-layout N4IgpgJg5mDOIC5QBcBOBDAZpglgYwBkcoALZAOigHsBiZKgZWXQDsIAhATwG0AGAXUSgADlVg5kOKiyEgAHogCMAZl7kAbAFYAHNoAsigOyLNAJl2KANCE6JTpzeV7L1ew7wCcm9V5+aAvv7WaFi4hMRk5LDMbABGnAAqjPTCNAkA8gD6DBkACnyCSCCi4pLSsgoIesrKGuq8inqazoravHq86ta2CPaOzq7uvsMBQSAh2PhEpBTRVKn0TKwcPAKyJRJSMkWVWtrk2oZ6Hsba6sbKKt12Dk4uzQ5ams-qgcEYk+EzUTEQ8UkAcVoGUyAPSBXWYk25R2iD2ByOHg82g89VMJg81wQ2kU5D02m8h1M93M6MCYxYVAgcFkEzC0zIkNKWwqiAAtF0bOzHEikW1USZ2qZDNo3uMPvSIhRqEzodtQJU9KYsYpFGplIZlKZzupTF4PGrRWM6VMpT9lv9kvNZWV5fI7D5yJplB5eJoBa58ZyeqZ8eRlEq9Fpjp0XPYxSavpE5sIbSzYQhNIZTE6Ospna7FB4XMosb79gHfcHXeow6YIxLTd9ohbElQgXGYQrEIYTuRDM9WrxNcnS96lIoU4ctSLFFpW509OT-EA */
 createMachine({
   id: "trafficLight",
-  initial: "go",
+  initial: "allowed",
+  predictableActionArguments: true,
   context: {
-    red: { state: "off" },
-    yellow: { state: "off" },
-    green: { state: "on" },
+    red: false,
+    yellow: false,
+    green: true,
   },
   states: {
-    go: {
-      on: {
-        toStandBy: {
-          target: "standbyToStop",
-          actions: assign({
-            red: { state: "off" },
-            yellow: { state: "on" },
-            green: { state: "on" }
-          })
-        }
-      }
+    allowed: {
+      entry: assign({
+        red: false,
+        yellow: false,
+        green: true
+      }),
+      on: { TO_STANDBY: "standbyToStop" },
     },
     standbyToStop: {
-      on: {
-        toStandBy: {
-          target: "stop",
-          actions: assign({
-            red: { state: "on" },
-            yellow: { state: "off" },
-            green: { state: "off" }
-          })
-        }
-      }
+      entry: assign({
+        red: false,
+        yellow: true,
+        green: true
+      }),
+      on: { TO_NOT_ALLOWED: "notAllowed" }
     },
-    stop: {
-      on: {
-        toStandBy: {
-          target: "standbyToGo",
-          actions: assign({
-            red: { state: "off" },
-            yellow: { state: "on" },
-            green: { state: "off" }
-          })
-        }
-      }
+    notAllowed: {
+      entry: assign({
+        red: true,
+        yellow: false,
+        green: false
+      }),
+      on: { TO_STANDBY: "standbyToGo" }
     },
     standbyToGo: {
-      on: {
-        toStandBy: {
-          target: "go",
-          actions: assign({
-            red: { state: "off" },
-            yellow: { state: "off" },
-            green: { state: "on" }
-          })
-        }
-      }
+      entry: assign({
+        red: false,
+        yellow: true,
+        green: false
+      }),
+      on: { TO_ALLOWED: "allowed" }
     },
   },
 });
@@ -73,9 +57,9 @@ createMachine({
 export function TrafficLight() {
   const [current, send] = useMachine(trafficLightMachine);
   const {
-    red: { state: redState },
-    yellow: { state: yellowState },
-    green: { state: greenState },
+    red: redState,
+    yellow: yellowState,
+    green: greenState,
   } = current.context;
 
   const handlNext = () => {
@@ -83,15 +67,19 @@ export function TrafficLight() {
     send(nextEvent);
   };
 
+  useEffect(() => {
+    console.log("🚀 > TrafficLight > current", current.toStrings(), current.context);
+  }, [current]);
+
   return (
     <div className="container flex flex-col items-center justify-center">
       <div
         className="my-2 flex max-w-fit flex-col items-center justify-center gap-2
       rounded-xl bg-zinc-700 p-4 shadow-slate-500 drop-shadow-lg"
       >
-        <Light color="red" state={redState} />
-        <Light color="yellow" state={yellowState} />
-        <Light color="green" state={greenState} />
+        <Light color="red" enabled={redState} />
+        <Light color="yellow" enabled={yellowState} />
+        <Light color="green" enabled={greenState} />
       </div>
       <button
         className="mx-auto rounded-md bg-slate-300 px-4 py-2 hover:bg-slate-400 focus:ring-1"
