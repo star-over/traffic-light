@@ -46,6 +46,8 @@
     "no-empty": "warn",
     "max-len": [ "warn", { "code": 120, "ignoreComments": true } ],
     // "jsx-a11y/label-has-associated-control": "off",
+    "import/no-extraneous-dependencies": "off",
+    "operator-linebreak":"off",
     "import/extensions": "off",
     "react/no-array-index-key": "off",
     "react/jsx-one-expression-per-line": "off",
@@ -55,10 +57,10 @@
     "no-shadow": "off",
     "object-curly-newline": [
       "warn",
-      { "ObjectExpression": { "multiline": true, "minProperties": 4 },
-        "ObjectPattern": { "multiline": true, "minProperties": 5 },
-        "ImportDeclaration": { "multiline": true, "minProperties": 5 },
-        "ExportDeclaration": { "multiline": true, "minProperties": 5 }
+      { "ObjectExpression": { "multiline": true, "minProperties": 2 },
+        "ObjectPattern": { "multiline": true, "minProperties": 2 },
+        "ImportDeclaration": { "multiline": true, "minProperties": 2 },
+        "ExportDeclaration": { "multiline": true, "minProperties": 2 }
       }
     ]
   }

@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
-    "hellofdfsdfsd"
+    "hellofdfsdfsd",
+    "xstate"
   ],
   "explorer.fileNesting.patterns": {
     "*.ts": "$(capture).js, $(capture).*.ts",
