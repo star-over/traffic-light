@@ -7,22 +7,16 @@ createMachine(
     id: "trafficLight",
     initial: "go",
     predictableActionArguments: true,
-    context: {
-      red: false, yellow: false, green: true,
-    },
+    context: { red: false, yellow: false, green: true, },
     states: {
 
       go: {
-        entry: assign({
-          red: false, yellow: false, green: true
-        }),
+        entry: assign({ red: false, yellow: false, green: true }),
         after: { PASS_DELAY: "goToStandby" },
       },
 
       goToStandby: {
-        entry: assign({
-          red: false, yellow: false, green: true
-        }),
+        entry: assign({ red: false, yellow: false, green: true }),
         invoke: {
           src: () => (cb) => {
             const interval = setInterval(() => cb("TICK"), 500);
@@ -34,9 +28,7 @@ createMachine(
       },
 
       standbyToStop: {
-        entry: assign({
-          red: false, yellow: true, green: false
-        }),
+        entry: assign({ red: false, yellow: true, green: false }),
         invoke: {
           src: () => (cb) => {
             const interval = setInterval(() => cb("TICK"), 500);
@@ -48,16 +40,12 @@ createMachine(
       },
 
       stop: {
-        entry: assign({
-          red: true, yellow: false, green: false
-        }),
+        entry: assign({ red: true, yellow: false, green: false }),
         after: { STOP_DELAY: "stopToGo" }
       },
 
       stopToGo: {
-        entry: assign({
-          red: true, yellow: true, green: false
-        }),
+        entry: assign({ red: true, yellow: true, green: false }),
         after: { BLINK_DELAY: "go" }
       },
 
