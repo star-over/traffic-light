@@ -19,9 +19,9 @@ export function TrafficLight() {
         className="my-2 flex max-w-fit flex-col items-center justify-center gap-2
         rounded-xl bg-zinc-700 p-4 shadow-slate-500 drop-shadow-lg"
       >
-        <Light color="red" enabled={current.context.red} />
-        <Light color="yellow" enabled={current.context.yellow} />
-        <Light color="green" enabled={current.context.green} />
+        <Light color="red" type={current.context.red} />
+        <Light color="yellow" type={current.context.yellow} />
+        <Light color="green" type={current.context.green} />
       </div>
       <span><code>{current.toStrings()}</code></span>
     </div>

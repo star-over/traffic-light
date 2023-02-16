@@ -7,56 +7,43 @@ createMachine(
     id: "trafficLight",
     initial: "go",
     predictableActionArguments: true,
-    context: { red: false, yellow: false, green: true, },
+    context: { red: "TURN_OFF", yellow: "TURN_OFF", green: "TURN_OFF", },
     states: {
 
       go: {
-        entry: assign({ red: false, yellow: false, green: true }),
-        after: { PASS_DELAY: "goToStandby" },
+        entry: assign({ red: "TURN_OFF", yellow: "TURN_OFF", green: "TURN_ON" }),
+        after: { GO_DELAY: "goToStandby" },
       },
 
       goToStandby: {
-        entry: assign({ red: false, yellow: false, green: true }),
-        invoke: {
-          src: () => (cb) => {
-            const interval = setInterval(() => cb("TICK"), 500);
-            return () => clearInterval(interval);
-          }
-        },
-        on: { TICK: { actions: assign({ green: (ctx) => !ctx.green }) } },
-        after: { TRANSITION_DELAY: "standbyToStop" },
+        entry: assign({ red: "TURN_OFF", yellow: "TURN_OFF", green: "BLINK_NORMAL" }),
+        after: { GO_TO_STANDBY_DELAY: "standbyToStop" },
       },
 
       standbyToStop: {
-        entry: assign({ red: false, yellow: true, green: false }),
-        invoke: {
-          src: () => (cb) => {
-            const interval = setInterval(() => cb("TICK"), 500);
-            return () => clearInterval(interval);
-          }
-        },
-        on: { TICK: { actions: assign({ yellow: (ctx) => !ctx.yellow }) } },
-        after: { BLINK_DELAY: "stop" },
+        entry: assign({ red: "TURN_OFF", yellow: "TURN_ON", green: "TURN_OFF" }),
+        after: { STANDBY_TO_STOP_DELAY: "stop" },
       },
 
       stop: {
-        entry: assign({ red: true, yellow: false, green: false }),
+        entry: assign({ red: "TURN_ON", yellow: "TURN_OFF", green: "TURN_OFF" }),
         after: { STOP_DELAY: "stopToGo" }
       },
 
       stopToGo: {
-        entry: assign({ red: true, yellow: true, green: false }),
-        after: { BLINK_DELAY: "go" }
+        entry: assign({ red: "TURN_ON", yellow: "TURN_ON", green: "TURN_OFF" }),
+        after: { STOP_TO_GO_DELAY: "go" }
       },
 
     }
   },
   {
     delays: {
-      TRANSITION_DELAY: 3000,
-      BLINK_DELAY: 3000,
-      PASS_DELAY: 3000,
-      STOP_DELAY: 2500,
+      GO_DELAY: 3000,
+      GO_TO_STANDBY_DELAY: 3000,
+      STANDBY_TO_STOP_DELAY: 3000,
+      STOP_DELAY: 3000,
+      STOP_TO_GO_DELAY: 3000,
     },
   }
 );

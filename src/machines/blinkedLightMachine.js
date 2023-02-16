@@ -11,39 +11,22 @@ createMachine(
     context: {
       blink: false,
       durations: {
-        normal: { on: 700, off: 300, },
+        normal: { on: 700, off: 400, },
         standby: { on: 500, off: 500, },
-        false: { on: 200, off: 200, },
+        false: { on: 200, off: 200, }, // false as fallback option for delays
       }
     },
 
     on: {
       TURN_ON: { actions: assign({ blink: false }), target: "turnedOn" },
       TURN_OFF: { actions: assign({ blink: false }), target: "turnedOff" },
-      BLINK_NORMAL: { actions: assign({ blink: "normal" }), target: "turnedOn" },
-      BLINK_STANDBY: { actions: assign({ blink: "standby" }), target: "turnedOn" },
+      BLINK_NORMAL: { actions: assign({ blink: "normal" }), target: "turnedOff" },
+      BLINK_STANDBY: { actions: assign({ blink: "standby" }), target: "turnedOff" },
     },
 
     states: {
-
-      turnedOn: {
-        after: {
-          ON_DURATION: [{
-            cond: (ctx) => ctx.blink,
-            target: "turnedOff"
-          }]
-        }
-      },
-
-      turnedOff: {
-        after: {
-          OFF_DURATION: [{
-            cond: (ctx) => ctx.blink,
-            target: "turnedOn",
-          }]
-        }
-      }
-
+      turnedOn: { after: { ON_DURATION: [{ cond: (ctx) => ctx.blink, target: "turnedOff" }] } },
+      turnedOff: { after: { OFF_DURATION: [{ cond: (ctx) => ctx.blink, target: "turnedOn", }] } }
     }
   },
   {
