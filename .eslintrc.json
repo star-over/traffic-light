@@ -47,6 +47,7 @@
     "no-empty": "warn",
     "max-len": [ "warn", { "code": 120, "ignoreComments": true } ],
     "function-paren-newline":"warn",
+    "prefer-destructuring":"warn",
     // "jsx-a11y/label-has-associated-control": "off",
     "spaced-comment":"off",
     "import/order": "off",

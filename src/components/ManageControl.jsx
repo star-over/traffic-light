@@ -1,14 +1,10 @@
 "use client";
 
 /* eslint-disable import/no-unresolved */
-import { trafficManagerMachine } from "machines/trafficManagerMachine";
-import { useMachine } from "@xstate/react";
 import { useEffect, useState } from "react";
-import { Light } from "./Light";
-import { ManageControl } from "./ManageControl";
+import { ManageButton } from "./ManageButton";
 
-export function TrafficLight() {
-  const [manager, sendToManager] = useMachine(trafficManagerMachine);
+export function ManageControl({ manager, sendToManager }) {
   const [buttonStates, setButtonsState] = useState({
     turnOff: {
       isNext: false,
@@ -57,22 +53,31 @@ export function TrafficLight() {
   }, [manager]);
 
   return (
-    <div className="container flex flex-col items-center justify-center">
-      <div
-        className="my-2 flex max-w-fit flex-col items-center justify-center gap-2
-          rounded-xl bg-zinc-700 p-4 shadow-slate-500 drop-shadow-lg"
-      >
-        <Light color="red" type={manager.context.red} />
-        <Light color="yellow" type={manager.context.yellow} />
-        <Light color="green" type={manager.context.green} />
-      </div>
+    <div className="">
 
-      <div className="mt-10">
-        <ManageControl
-          manager={manager}
-          sendToManager={sendToManager}
-        />
-      </div>
+      <ManageButton
+        className="rounded-l-full"
+        enabled={buttonStates.turnOff.isNext}
+        selected={buttonStates.turnOff.isSelected}
+        onClick={buttonStates.turnOff.handle}
+      >{buttonStates.turnOff.caption}
+      </ManageButton>
+
+      <ManageButton
+        enabled={buttonStates.standBy.isNext}
+        selected={buttonStates.standBy.isSelected}
+        onClick={buttonStates.standBy.handle}
+      >{buttonStates.standBy.caption}
+      </ManageButton>
+
+      <ManageButton
+        className="rounded-r-full"
+        enabled={buttonStates.run.isNext}
+        selected={buttonStates.run.isSelected}
+        onClick={buttonStates.run.handle}
+      >{buttonStates.run.caption}
+      </ManageButton>
+
     </div>
   );
 }
