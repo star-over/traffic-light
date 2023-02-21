@@ -3,7 +3,8 @@
 /* eslint-disable import/no-unresolved */
 import { cva } from "class-variance-authority";
 
-const cvaFn = cva("py-3 px-6 w-36 transition-all border-4 font-bold text-lg", {
+const cvaFn = cva(["py-1 sm:py-2 px-2 sm:px-4 w-24 sm:w-30 sm:w-36 transition-all border-2",
+  "font-normal sm:font-bold text-base sm:text-lg"], {
   variants: {
     selected: {
       true: "bg-orange-500 border-orange-600 text-sky-100",
@@ -22,7 +23,7 @@ const cvaFn = cva("py-3 px-6 w-36 transition-all border-4 font-bold text-lg", {
   defaultVariants: { enabled: false, selected: false },
 });
 
-export function ManageButton({
+export function ControlButton({
   enabled, selected, onClick, children, className
 }) {
   const cn = cvaFn({ enabled, selected, className });
