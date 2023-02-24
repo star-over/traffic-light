@@ -3,22 +3,22 @@
 /* eslint-disable import/no-unresolved */
 import { cva } from "class-variance-authority";
 
-const cvaFn = cva(["py-1 sm:py-2 px-2 sm:px-4 w-24 sm:w-30 sm:w-36 transition-all border-2",
-  "font-normal sm:font-bold text-base sm:text-lg"], {
+const cvaFn = cva(["py-1 sm:py-2 px-2 w-24 sm:w-30 sm:w-36 transition-all border",
+  "font-normal text-base sm:text-lg"], {
   variants: {
     selected: {
-      true: "bg-orange-500 border-orange-600 text-sky-100",
+      true: "bg-blue-600 border-blue-600 text-white",
       false: "",
     },
     enabled: {
-      true: "bg-sky-200 border-sky-300  text-slate-700 hover:bg-orange-300 hover:border-orange-500 ",
+      true: "bg-white border-gray-400/50  text-slate-900 hover:text-blue-600 ",
       false: "",
     },
   },
   compoundVariants: [{
     enabled: false,
     selected: false,
-    className: "bg-gray-200 border-gray-300 text-gray-400",
+    className: "bg-gray-200/50 border-gray-400/50 text-gray-400/50",
   }],
   defaultVariants: { enabled: false, selected: false },
 });

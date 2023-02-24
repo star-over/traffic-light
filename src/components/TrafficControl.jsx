@@ -5,7 +5,7 @@ import { ControlButton } from "./ControlButton";
 
 export function TrafficControl({ manager, sendToManager }) {
   return (
-    <div className="min-w-min shadow-lg">
+    <div className="min-w-min">
 
       <ControlButton
         className="rounded-l-lg"
@@ -16,6 +16,7 @@ export function TrafficControl({ manager, sendToManager }) {
       </ControlButton>
 
       <ControlButton
+        className="border-x-transparent"
         enabled={manager.nextEvents.includes("TO_STANDBY")}
         selected={manager.matches("standby")}
         onClick={() => sendToManager("TO_STANDBY")}
